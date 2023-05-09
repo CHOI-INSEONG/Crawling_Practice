@@ -1,25 +1,34 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from fake_useragent import  UserAgent
 import time
-"""
-»ç¶÷ÀÎÀÇ Ã¤¿ë°ø°í¸¦ °Ë»öÇÏ´Â »çÀÌÆ®¸¦ ¿ÀÇÂÇÏ´Â ÄÚµå
-"""
+
 def OpenSite():
-    options = webdriver.ChromeOptions()
-    #options.add_argument("headless")
+    options = Options()
+    url = "https://www.saramin.co.kr/zf_user/"
+    userAgent = UserAgent()
+    options.add_argument(f"user-agent = {userAgent.random}")
     driver = webdriver.Chrome()
-    url = "https://www.saramin.co.kr/zf_user/search?search_area=main&searchType=default_mysearch"
     driver.get(url)
+    time.sleep(5)
+    job_input = driver.find_element(By.XPATH, "//*[@id=\"btn_search\"]")
+    job_input.click()
+    time.sleep(2)
+    keyword_Sender = driver.find_element(By.XPATH, "//*[@id=\"ipt_keyword_recruit\"]")
+    keyword_Sender.send_keys('ê°œë°œì')
+    time.sleep(2)
+    keyword_search = driver.find_element(By.XPATH, "//*[@id=\"btn_search_recruit\"]")
+    keyword_search.click()
+    time.sleep(5)
+    driver.find_element(By.XPATH, "//*[@id=\"content\"]/ul[1]/li[2]/a").click()
     time.sleep(5)
     return driver
 
-"""
-Å°¿öµå¸¦ ÀÔ·Â¹Ş¾Æ¼­ °Ë»öÀ» ÇÏ´Â ÄÚµå
-"""
+
 def SearchJob(keyword):
     driver = OpenSite()
-    search = driver.find_element(By.CSS_SELECTOR, "#total_ipt_keyword")
-
+    driver.find_element(By.XPATH, "//*[@id=\"btn_search\"]").click()
 
 
 
